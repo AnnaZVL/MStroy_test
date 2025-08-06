@@ -4,7 +4,11 @@ import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue({
+      script: {
+        globalTypeFiles: ['src/types/*.d.ts']  
+      }
+    })],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')

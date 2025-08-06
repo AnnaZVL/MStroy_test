@@ -1,5 +1,8 @@
 import { createApp } from 'vue'
-import './style.css'
+import './assets/style/main.scss'
 import App from './App.vue'
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 createApp(App).mount('#app')
