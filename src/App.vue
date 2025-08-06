@@ -1,26 +1,32 @@
 <script setup lang="ts">
-import { AgGridVue } from 'ag-grid-vue3';
-import { ModeType, ModeTypeLabels } from '@/types/mode';
+import { ModeType } from '@/types/mode';
 import TableHeader from './components/Layouts/Header/TableHeader.vue';
-import items from '@/constants/items';
+import TableView from './components/Layouts/Header/Tables/TableView.vue';
+import TableEdit from './components/Layouts/Header/Tables/TableEdit.vue';
+import { items } from '@/constants/items';
 import { ref } from 'vue';
+import { TreeStore } from '@/utils/treeStore';
+import { useTreeStore } from './store/treeStore';
 
-const rowData = ref(items);
-
-const colDefs = ref([{ field: 'id' }, { field: 'parent' }, { field: 'label' }]);
+const treeStore = useTreeStore()
+//const treeStore = new TreeStore(items);
 
 const currentMode = ref<ModeType>(ModeType.View);
 
 const changeMode = (mode: ModeType) => {
     console.log('APP', mode);
+    currentMode.value = mode
+    const a = treeStore.getItemsAll()
+    console.log('ALL', a);
+   // treeStore.updateItem({id: 1, parent: null, label: '232323'})
 };
 </script>
 
 <template>
     <main class="main">
         <TableHeader @change:mode="changeMode" />
-        <ag-grid-vue :rowData="rowData" :columnDefs="colDefs" style="height: 500px; width: 100%">
-        </ag-grid-vue>
+        <TableView v-if="currentMode === ModeType.View"/>
+        <TableEdit v-else />
     </main>
 </template>
 
