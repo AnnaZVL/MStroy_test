@@ -1,31 +1,29 @@
 <script setup lang="ts">
 import { ModeType } from '@/types/mode';
 import TableHeader from './components/Layouts/Header/TableHeader.vue';
-import TableView from './components/Layouts/Header/Tables/TableView.vue';
-import TableEdit from './components/Layouts/Header/Tables/TableEdit.vue';
+import TableView from './components/Layouts/Tables/TableView.vue';
+import TableEdit from './components/Layouts/Tables/TableEdit.vue';
 import { items } from '@/constants/items';
-import { ref } from 'vue';
-import { TreeStore } from '@/utils/treeStore';
+import { onMounted, ref } from 'vue';
 import { useTreeStore } from './store/treeStore';
 
-const treeStore = useTreeStore()
-//const treeStore = new TreeStore(items);
+const treeStore = useTreeStore();
 
-const currentMode = ref<ModeType>(ModeType.View);
+const currentMode = ref<ModeType>(ModeType.Edit);
 
-const changeMode = (mode: ModeType) => {
-    console.log('APP', mode);
-    currentMode.value = mode
-    const a = treeStore.getItemsAll()
-    console.log('ALL', a);
-   // treeStore.updateItem({id: 1, parent: null, label: '232323'})
+const changeMode = (mode: ModeType) => {    
+    currentMode.value = mode;
 };
+
+onMounted(() => {
+    treeStore.loadItems(items);
+});
 </script>
 
 <template>
     <main class="main">
         <TableHeader @change:mode="changeMode" />
-        <TableView v-if="currentMode === ModeType.View"/>
+        <TableView v-if="currentMode === ModeType.View" />
         <TableEdit v-else />
     </main>
 </template>

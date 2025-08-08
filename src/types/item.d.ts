@@ -4,16 +4,26 @@ export interface Item {
     label: string
 }
 
-// export interface ColType {
-//     field: string
+interface TreeNode extends Item {
+  children?: TreeNode[]
+}
 
-// }
 export enum CategoryType {
   Group = 'group',
   Elem = 'elem'
 }
 
-export const ModeTypeLabels: Record<CategoryType, string> = {
+export const CategoryTypeLabels: Record<CategoryType, string> = {
   [CategoryType.Group]: 'Группа',
   [CategoryType.Elem]: 'Элемент'
-};
+} as const
+
+export interface ItemTable {
+    count: number
+    id: Item['id']
+    parent: Item['id']
+    label: string
+    originalParent: Item['parent']
+    path?: Item['id'][]
+    children?: Item[]
+}
